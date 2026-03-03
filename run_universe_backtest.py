@@ -170,7 +170,6 @@ def main():
     # =========================
     # Portfolio-level analysis
     # =========================
-    initial_capital = 10_000
 
     # sort by time so compounding is chronological (across all tickers)
     if "entry_date" in all_trades_df.columns:
@@ -178,30 +177,6 @@ def main():
         all_trades_df = all_trades_df.sort_values("entry_date")
 
     returns = pd.to_numeric(all_trades_df["ret_on_debit"], errors="coerce").dropna()
-
-    equity_curve = initial_capital * (1.0 + returns).cumprod()
-    final_portfolio_value = float(equity_curve.iloc[-1])
-
-    years = 5  # 2021–2025
-    cagr = (final_portfolio_value / initial_capital) ** (1 / years) - 1
-
-    peak = equity_curve.cummax()
-    drawdown = equity_curve / peak - 1
-    max_drawdown = float(drawdown.min())
-
-    # Save equity curve (optional but useful)
-    portfolio_df = pd.DataFrame({
-        "trade_index": np.arange(1, len(equity_curve) + 1),
-        "portfolio_value": equity_curve.values,
-    })
-    portfolio_df.to_csv(PORTFOLIO_CSV, index=False)
-
-    print("\n=== Portfolio Simulation (Full Reinvestment) ===")
-    print(f"Initial capital: ${initial_capital:,.0f}")
-    print(f"Final value:     ${final_portfolio_value:,.2f}")
-    print(f"CAGR:            {cagr:.2%}")
-    print(f"Max drawdown:    {max_drawdown:.2%}")
-    print(f"Saved portfolio equity curve -> {PORTFOLIO_CSV}")
 
     # ---- Quick overall distribution stats ----
     win_pct = float((all_trades_df["pnl"] > 0).mean())
