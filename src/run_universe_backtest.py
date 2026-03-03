@@ -167,11 +167,7 @@ def main():
         print("\nNo trades across entire universe.")
         return  # nothing else to compute
 
-    # =========================
-    # Portfolio-level analysis
-    # =========================
-
-    # sort by time so compounding is chronological (across all tickers)
+    # Sort by time so compounding is chronological (across all tickers)
     if "entry_date" in all_trades_df.columns:
         all_trades_df["entry_date"] = pd.to_datetime(all_trades_df["entry_date"], errors="coerce")
         all_trades_df = all_trades_df.sort_values("entry_date")
