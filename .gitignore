@@ -1,0 +1,9 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated backtest outputs
+backtest_outputs/
+
+# macOS junk
+.DS_Store
